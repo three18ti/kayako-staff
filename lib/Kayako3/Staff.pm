@@ -272,6 +272,25 @@ has 'ticket_attachment_response' => (
     default     => sub { Kayako3::Staff::Response::LoadAttachment::Kayako_staffapi->new },
 );
 
+=over 4
+
+=item update_ticket_response
+
+Response object for ticket update action
+
+=back
+
+=cut
+
+use Kayako3::Staff::Response::UpdateTicket::Kayako_staffapi;
+has 'update_ticket_response' => (
+    is          => 'rw',
+    isa         => 'Kayako3::Staff::Response::UpdateTicket::Kayako_staffapi',
+    lazy        => 1,
+    handles     => qr/^(?:_.*|get.*)/,
+    default     => sub { Kayako3::Staff::Response::UpdateTicket::Kayako_staffapi->new },
+);
+
 
 =head1 Private Helper Functions
 
@@ -473,6 +492,33 @@ sub load_attachment {
     );
 
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::LoadAttachment' } )->loader;
+    $loader->parse_string( $xml_response );
+    $self->{load_ticket_response} = shift $loader->filter->objects;
+}
+
+=over 4
+
+=item update_ticket 
+
+Updates an existing ticket (or creates a new one?)
+
+=back
+
+=cut
+
+sub update_ticket {
+    my $self = shift;
+    my $payload = shift;
+
+    my $xml_response = $self_dispatch_request(
+        $self->_apt_ticket_update => {
+            sessionid   => $self->_session_id,
+            payload     => $payload,
+        }
+    );
+    
+    my $loader 
+        = XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::UpdateTicket::Kayako_staffapi' } )->loader;
     $loader->parse_string( $xml_response );
     $self->{load_ticket_response} = shift $loader->filter->objects;
 }
