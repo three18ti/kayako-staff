@@ -13,6 +13,10 @@ use Carp;
 
 Kayako3::Staff - Interface for Kayako API
 
+=head1 SYNOPSIS
+
+API Wrapper for the Kayako3 StaffAPI
+
 =cut
 
 =head1 Required Parameters
