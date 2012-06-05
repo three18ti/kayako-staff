@@ -83,7 +83,6 @@ Should not be accessed directly, provides access to the Kayako Staff API URLS
 =cut
 
 use Kayako3::Staff::Collection::APIUrls;
-
 has '_api_urls' => (
     is      => 'ro',
     isa     => 'Kayako3::Staff::Collection::APIUrls',
@@ -371,7 +370,7 @@ Perfoms the logout operation and stores the logout object
 sub logout {
     my $self = shift;
     
-    my $xml_response = $_dispatch_request(
+    my $xml_response = $self->_dispatch_request(
         $self->_api_logout => {
             sessionid => $self->_session_id,
         },
@@ -403,8 +402,8 @@ sub get_info {
             sessionid       => $self->_session_id,
             wantmacros      => $want_macros,
             wantavatars     => $want_avatars,
-        }
-
+        },
+    );
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Info' } )->loader;
     $loader->parse_string( $xml_response );
     $self->{getinfo_response} = shift $loader->filter->objects;
