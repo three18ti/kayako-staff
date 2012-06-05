@@ -236,10 +236,77 @@ has 'load_ticket_response' => (
     handles     => qr/^(?:_.*|get.*)/,
 );
 
-=head1 Public Functions
+=head1 Private Helper Functions
+
+Private functuions used by the application, should never be called directly
+
+=over 4
+
+=item _dispatch_request
+
+performs the API call, returns the response body unzipped
+
+=back
 
 =cut
 
+sub _dispatch_request {
+    my $self = shift;
+    my $api_url = shift;
+    my $parameters = shift;
+
+    my $response = $self->post($api_url, $parameters);
+    my $content = $self->_unzip($response->content);
+
+}
+
+=head1 Public Functions
+
+=over 4
+
+=item login
+
+Perfoms the login operation and stores the login object.
+
+=cut
+
+sub login {
+    my $self = shift;
+
+    my $xml_response = $self->_dispatch_request(
+        $self->_api_login => {
+            username            => $self->username,
+            password            => $self->password,
+        },
+    );
+    my $loader 
+        = XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Login' } )->loader;
+    $loader->parse_string( $unzipped_content );
+    $self->{login} = shift $loader->filter->objects;
+}
+
+=over 4
+
+=item logout
+
+Perfoms the logout operation and stores the logout object
+
+=back
+
+=cut
+
+sub logout {
+    my $self = shift;
+    
+    my $xml_response = $_dispatch_request(
+        $self->_api_logout => {
+            sessionid => $self->_session_id,
+        },
+    );
+    my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Logout' } )->loader;
+    $loader->parse_string( $xml_response );
+    my $self->{logout} = shift $loader->filter->objects;
+}
 
 
 =head1 Utility Methods
