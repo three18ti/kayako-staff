@@ -236,6 +236,71 @@ has 'load_ticket_response' => (
     handles     => qr/^(?:_.*|get.*)/,
 );
 
+=head1 Public Functions
+
+=cut
 
 
-1;
+
+=head1 Utility Methods
+
+These are methods used internally by the application, should never need to be called externally
+
+=over 4
+
+=item _unzip
+
+Unzips the response content
+
+=back
+
+=cut
+
+sub _unzip {
+    my $self = shift;
+    my $input = shift;
+
+    open my $FHIN, '<', \$input;
+    open my $FHOUT, '>', \my $xml_response;
+
+    gunzip $FHIN => $FHOUT
+        or warn "gunzip failed: $GunzipError\n";
+
+    return $xml_response;
+}
+
+
+=over 4
+
+=item _check_ticket_id
+
+Performs check if ticket_id is numberical or is passed as full ticket ID
+
+=back
+
+=cut
+
+=cut
+
+sub _check_ticket_id {
+    my $self = shift;
+    my $ticket = shift;
+
+    my $ticket_id = 'Ticket ID Not Found';
+    if ($ticket =~ /^[+-]?\d+$/ ) {
+        $ticket_id = $ticket;
+    }
+    else {
+        foreach (@{$self->ticket_list}) {
+            if ($_->{ticket_number} eq $ticket) {
+                $ticket_id = $_->{id};
+            }
+        }
+    }
+    return $ticket_id;
+}
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
+1; # End of Kayako3::Staff
+__END__
