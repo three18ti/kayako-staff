@@ -47,7 +47,7 @@ has 'password' => (
     is => 'ro',
     isa => 'Str',
     required => 1,
-    trigger => \&_do_login,
+    trigger => \&_initial_login,
 );
 
 =over 4
@@ -154,8 +154,9 @@ has 'login_response' => (
     is => 'rw',
     isa => 'Kayako3::Staff::Response::Login::Kayako_staffapi',
     lazy => 1,
-    builder => '_do_login',
     handles => qr/^(?:_.*)/,
+    builder => \&login,
+#    default => sub { Kayako3::Staff::Response::Login::Kayako_staffapi->new },
 );
 
 =over 4
@@ -178,6 +179,7 @@ has 'logout_response' => (
     isa => 'Kayako3::Staff::Response::Logout::Kayako_staffapi',
     lazy => 1,
     handles => qr/^(?:_.*)/,
+    default => sub { Kayako3::Staff::Response::Logout::Kayako_staffapi->new },
 );
 
 =over 4
@@ -198,11 +200,14 @@ has 'info_response' => (
     isa => 'Kayako3::Staff::Response::Info::Kayako_staffapi',
     lazy => 1,
     handles => qr/^(?:_.*|get.*)/,
+    builder => \&get_info,
+#    default => sub { Kayako3::Staff::Response::Info::Kayako_staffapi },
+
 );
 
 =over 4
 
-=head2 ticket_list_respnse
+=item ticket_list_respnse
 
 ticket list response object
 
@@ -218,13 +223,18 @@ has 'ticket_list_response' => (
     isa => 'Kayako3::Staff::Response::TicketList::Kayako_staffapi',
     lazy => 1,
     handles => qr/^(?:_.*|ticket_list|get.*)/,
+    default  => sub { Kayako3::Staff::Response::TicketList::Kayako_staffapi->new },
 );
 
-=head2 load_ticket_response
+=over 4
+
+=item load_ticket_response
 
 Loaded Ticket response obkect
 
 Object storage for Kayako3::Staff::Response::LoadTicket
+
+=back
 
 =cut
 
@@ -234,7 +244,30 @@ has 'load_ticket_response' => (
     isa         => 'Kayako3::Staff::Response::LoadTicket::Kayako_staffapi',
     lazy        => 1,
     handles     => qr/^(?:_.*|get.*)/,
+    default     => sub { Kayako3::Staff::Response::LoadTicket::Kayako_staffapi->new },
 );
+
+=over 4
+
+=item ticket_attachment_response
+
+Loaded Ticket Attachment
+
+Object storage for Kayako3::Staff::Response::LoadAttachment
+
+=back
+
+=cut
+
+use Kayako3::Staff::Response::LoadAttachment::Kayako_staffapi;
+has 'ticket_attachment_response' => (
+    is          => 'rw',
+    isa         => 'Kayako3::Staff::Response::LoadAttachment::Kayako_staffapi',
+    lazy        => 1,
+    handles     => qr/^(?:_.*|get.*)/,
+    default     => sub { Kayako3::Staff::Response::LoadAttachment::Kayako_staffapi->new },
+);
+
 
 =head1 Private Helper Functions
 
@@ -258,6 +291,23 @@ sub _dispatch_request {
     my $response = $self->post($api_url, $parameters);
     my $content = $self->_unzip($response->content);
 
+}
+
+=over 4
+
+=item _initial_login
+
+Perfoms the login and get_info actions when initializing the Kayako3::Staff object
+
+=back
+
+=cut
+
+sub _initial_login {
+    my $self = shift;
+
+    $self->login;
+    $self->get_info;
 }
 
 =head1 Public Functions
@@ -308,6 +358,121 @@ sub logout {
     my $self->{logout} = shift $loader->filter->objects;
 }
 
+=over 4
+
+=item get_info
+
+Initializes base info, delegates methods for accessing and translating keys
+
+Optionally, you may pass the 1 as the second and third parameters if you need 
+
+=back
+
+=cut
+
+sub get_info {
+    my $self            = shift;
+    my $want_macros     = shift || 0;
+    my $want_avatars    = shift || 0;    
+
+    my $xml_response = $self->_dispatch_request(
+        $self->_api_get_info => {
+            sessionid       => $self->_session_id,
+            wantmacros      => $want_macros,
+            wantavatars     => $want_avatars,
+        }
+
+    my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Info' } )->loader;
+    $loader->parse_string( $xml_response );
+    $self->{getinfo_response} = shift $loader->filter->objects;
+}
+
+
+=over 4
+
+=item get_ticket_list
+
+Retrieve ticket list for specified department and (optional) status
+
+=back
+
+=cut
+
+sub get_ticket_list {
+    my $self = shift;
+    my $department_id = shift;
+    my $status_id = shift if $#_ > 1;
+    my $optional_parameters = pop;
+
+    $optional_parameters->{statusid} = $status_id if $status_id;
+
+    my $xml_response = $self->_dispatch_request(
+        $self->_api_ticket_list => {
+            sessionid       => $self->_session_id,
+            departmentid   => $department_id,
+            %$optinal_parameters
+        },
+    );
+    my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::TicketList' } )->loader;
+    $loader->parse_string( $xml_response );
+    $self->{ticket_list_response} = shift $loader->filter->objects;
+}
+
+=over 4
+
+=item load_ticket
+
+Retrieve a ticket from the previously loaded ticket list
+
+=back
+
+=cut
+
+sub load_ticket {
+    my $self                = shift;
+    my $ticket_id            = shift;
+    my $optional_parameters = shift;    
+    
+    my $xml_response = $self->_dispatch_request(
+        $self->_api_ticket_load => {
+            sessionid   => $self->_session_id,
+            ticketid    => $ticket_id,
+            $%optional_parameters,
+        },
+    );
+    my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::LoadTicket' } )->loader;
+    $loader->parse_string( $xml_response );
+    $self->{load_ticket_response} = shift $loader->filter->objects;
+}
+
+=over 4
+
+=item load_attachment
+
+Retrieve an attchment for a ticket, requires ticket_id and attachment_id
+
+=back
+
+=cut
+
+sub load_attachment {
+    my $self = shift;
+    my $ticket_id = shift;
+    my $attachment_id = shift;
+
+    my $xml_response = $self->_dispatch_request(
+        $self->_api_ticket_attachment => {
+            sessionid       => $self->_session_id,
+            ticketid        => $ticket_id,
+            attachmentid    => $attachment_id,
+        }
+    );
+
+    my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::LoadAttachment' } )->loader;
+    $loader->parse_string( $xml_response );
+    $self->{load_ticket_response} = shift $loader->filter->objects;
+}
+
 
 =head1 Utility Methods
 
@@ -344,8 +509,6 @@ sub _unzip {
 Performs check if ticket_id is numberical or is passed as full ticket ID
 
 =back
-
-=cut
 
 =cut
 
