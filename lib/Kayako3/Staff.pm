@@ -146,8 +146,6 @@ Login response object
 
 Object storage for Kayako3::Staff::Response::Login::Kayako_staffapi object.
 
-Stores the XML response from $self->_do_login as a Moose object for easy access
-
 =back
 
 =cut
@@ -158,7 +156,7 @@ has 'login_response' => (
     isa => 'Kayako3::Staff::Response::Login::Kayako_staffapi',
     lazy => 1,
     handles => qr/^(?:_.*)/,
-    builder => \&login,
+    builder => 'login',
 #    default => sub { Kayako3::Staff::Response::Login::Kayako_staffapi->new },
 );
 
@@ -169,8 +167,6 @@ has 'login_response' => (
 Logout response object
 
 Object storage for Kayako3::Staff::Response::Logout::Kayako_staffapi
-
-Stores the XML response from $self->_do_logout as a Moose object
 
 =back
 
@@ -203,8 +199,8 @@ has 'info_response' => (
     isa => 'Kayako3::Staff::Response::Info::Kayako_staffapi',
     lazy => 1,
     handles => qr/^(?:_.*|get.*)/,
-    builder => \&get_info,
-#    default => sub { Kayako3::Staff::Response::Info::Kayako_staffapi },
+#    builder => \&get_info,
+    default => sub { Kayako3::Staff::Response::Info::Kayako_staffapi->new },
 
 );
 
@@ -353,7 +349,7 @@ sub login {
     );
     my $loader 
         = XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Login' } )->loader;
-    $loader->parse_string( $unzipped_content );
+    $loader->parse_string( $xml_response );
     $self->{login} = shift $loader->filter->objects;
 }
 
@@ -377,7 +373,7 @@ sub logout {
     );
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Logout' } )->loader;
     $loader->parse_string( $xml_response );
-    my $self->{logout} = shift $loader->filter->objects;
+    $self->{logout} = shift $loader->filter->objects;
 }
 
 =over 4
@@ -432,7 +428,7 @@ sub get_ticket_list {
         $self->_api_ticket_list => {
             sessionid       => $self->_session_id,
             departmentid   => $department_id,
-            %$optinal_parameters
+            %$optional_parameters
         },
     );
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::TicketList' } )->loader;
@@ -459,7 +455,7 @@ sub load_ticket {
         $self->_api_ticket_load => {
             sessionid   => $self->_session_id,
             ticketid    => $ticket_id,
-            $%optional_parameters,
+            %$optional_parameters,
         },
     );
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::LoadTicket' } )->loader;
@@ -509,8 +505,8 @@ sub update_ticket {
     my $self = shift;
     my $payload = shift;
 
-    my $xml_response = $self_dispatch_request(
-        $self->_apt_ticket_update => {
+    my $xml_response = $self->_dispatch_request(
+        $self->_api_ticket_update => {
             sessionid   => $self->_session_id,
             payload     => $payload,
         }
