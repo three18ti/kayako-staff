@@ -1,0 +1,645 @@
+package Kayako3::Staff::Response::TicketList::Ticket;
+use Moose;
+use namespace::autoclean;
+use XML::Toolkit;
+
+has 'creationmode_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Creationmode]',
+     is          => 'ro',     init_arg    => 'creationmodes',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_creationmode => ['push'] },     description => {
+        LocalName => "creationmode",
+        Prefix => "",
+        node_type => "child",
+        Name => "creationmode",
+        NamespaceURI => "",
+        sort_order => 0,
+     },
+);
+has 'creationtime_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Creationtime]',
+     is          => 'ro',     init_arg    => 'creationtimes',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_creationtime => ['push'] },     description => {
+        LocalName => "creationtime",
+        Prefix => "",
+        node_type => "child",
+        Name => "creationtime",
+        NamespaceURI => "",
+        sort_order => 1,
+     },
+);
+has 'creationtype_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Creationtype]',
+     is          => 'ro',     init_arg    => 'creationtypes',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_creationtype => ['push'] },     description => {
+        LocalName => "creationtype",
+        Prefix => "",
+        node_type => "child",
+        Name => "creationtype",
+        NamespaceURI => "",
+        sort_order => 2,
+     },
+);
+has 'creator_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Creator]',
+     is          => 'ro',     init_arg    => 'creators',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_creator => ['push'] },     description => {
+        LocalName => "creator",
+        Prefix => "",
+        node_type => "child",
+        Name => "creator",
+        NamespaceURI => "",
+        sort_order => 3,
+     },
+);
+has 'departmentid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Departmentid]',
+     is          => 'ro',     init_arg    => 'departmentids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_departmentid => ['push'] },     description => {
+        LocalName => "departmentid",
+        Prefix => "",
+        node_type => "child",
+        Name => "departmentid",
+        NamespaceURI => "",
+        sort_order => 4,
+     },
+);
+has 'departmenttitle_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Departmenttitle]',
+     is          => 'ro',     init_arg    => 'departmenttitles',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_departmenttitle => ['push'] },     description => {
+        LocalName => "departmenttitle",
+        Prefix => "",
+        node_type => "child",
+        Name => "departmenttitle",
+        NamespaceURI => "",
+        sort_order => 5,
+     },
+);
+has 'displayid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Displayid]',
+     is          => 'ro',     init_arg    => 'displayids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_displayid => ['push'] },     description => {
+        LocalName => "displayid",
+        Prefix => "",
+        node_type => "child",
+        Name => "displayid",
+        NamespaceURI => "",
+        sort_order => 6,
+     },
+);
+has 'email_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Email]',
+     is          => 'ro',     init_arg    => 'emails',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_email => ['push'] },     description => {
+        LocalName => "email",
+        Prefix => "",
+        node_type => "child",
+        Name => "email",
+        NamespaceURI => "",
+        sort_order => 7,
+     },
+);
+has 'escalationruleid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Escalationruleid]',
+     is          => 'ro',     init_arg    => 'escalationruleids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_escalationruleid => ['push'] },     description => {
+        LocalName => "escalationruleid",
+        Prefix => "",
+        node_type => "child",
+        Name => "escalationruleid",
+        NamespaceURI => "",
+        sort_order => 8,
+     },
+);
+has 'flagtype_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Flagtype]',
+     is          => 'ro',     init_arg    => 'flagtypes',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_flagtype => ['push'] },     description => {
+        LocalName => "flagtype",
+        Prefix => "",
+        node_type => "child",
+        Name => "flagtype",
+        NamespaceURI => "",
+        sort_order => 9,
+     },
+);
+has 'fullname_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Fullname]',
+     is          => 'ro',     init_arg    => 'fullnames',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_fullname => ['push'] },     description => {
+        LocalName => "fullname",
+        Prefix => "",
+        node_type => "child",
+        Name => "fullname",
+        NamespaceURI => "",
+        sort_order => 10,
+     },
+);
+has 'hasattachments_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Hasattachments]',
+     is          => 'ro',     init_arg    => 'hasattachmentss',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_hasattachments => ['push'] },     description => {
+        LocalName => "hasattachments",
+        Prefix => "",
+        node_type => "child",
+        Name => "hasattachments",
+        NamespaceURI => "",
+        sort_order => 11,
+     },
+);
+has 'hasbilling_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Hasbilling]',
+     is          => 'ro',     init_arg    => 'hasbillings',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_hasbilling => ['push'] },     description => {
+        LocalName => "hasbilling",
+        Prefix => "",
+        node_type => "child",
+        Name => "hasbilling",
+        NamespaceURI => "",
+        sort_order => 12,
+     },
+);
+has 'hasdraft_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Hasdraft]',
+     is          => 'ro',     init_arg    => 'hasdrafts',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_hasdraft => ['push'] },     description => {
+        LocalName => "hasdraft",
+        Prefix => "",
+        node_type => "child",
+        Name => "hasdraft",
+        NamespaceURI => "",
+        sort_order => 13,
+     },
+);
+has 'hasfollowup_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Hasfollowup]',
+     is          => 'ro',     init_arg    => 'hasfollowups',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_hasfollowup => ['push'] },     description => {
+        LocalName => "hasfollowup",
+        Prefix => "",
+        node_type => "child",
+        Name => "hasfollowup",
+        NamespaceURI => "",
+        sort_order => 14,
+     },
+);
+has 'hasnotes_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Hasnotes]',
+     is          => 'ro',     init_arg    => 'hasnotess',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_hasnotes => ['push'] },     description => {
+        LocalName => "hasnotes",
+        Prefix => "",
+        node_type => "child",
+        Name => "hasnotes",
+        NamespaceURI => "",
+        sort_order => 15,
+     },
+);
+has 'id' => (
+     isa         => 'Str',
+     is          => 'ro',   
+     traits      => [ 'XML'],
+     description => {
+        LocalName => "id",
+        Prefix => "",
+        node_type => "attribute",
+        Name => "id",
+        NamespaceURI => "",
+        sort_order => 16,
+     },
+);
+has 'ipaddress_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Ipaddress]',
+     is          => 'ro',     init_arg    => 'ipaddresss',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_ipaddress => ['push'] },     description => {
+        LocalName => "ipaddress",
+        Prefix => "",
+        node_type => "child",
+        Name => "ipaddress",
+        NamespaceURI => "",
+        sort_order => 17,
+     },
+);
+has 'isescalated_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Isescalated]',
+     is          => 'ro',     init_arg    => 'isescalateds',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_isescalated => ['push'] },     description => {
+        LocalName => "isescalated",
+        Prefix => "",
+        node_type => "child",
+        Name => "isescalated",
+        NamespaceURI => "",
+        sort_order => 18,
+     },
+);
+has 'lastactivity_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Lastactivity]',
+     is          => 'ro',     init_arg    => 'lastactivitys',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_lastactivity => ['push'] },     description => {
+        LocalName => "lastactivity",
+        Prefix => "",
+        node_type => "child",
+        Name => "lastactivity",
+        NamespaceURI => "",
+        sort_order => 19,
+     },
+);
+has 'lastreplier_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Lastreplier]',
+     is          => 'ro',     init_arg    => 'lastrepliers',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_lastreplier => ['push'] },     description => {
+        LocalName => "lastreplier",
+        Prefix => "",
+        node_type => "child",
+        Name => "lastreplier",
+        NamespaceURI => "",
+        sort_order => 20,
+     },
+);
+has 'laststaffreply_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Laststaffreply]',
+     is          => 'ro',     init_arg    => 'laststaffreplys',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_laststaffreply => ['push'] },     description => {
+        LocalName => "laststaffreply",
+        Prefix => "",
+        node_type => "child",
+        Name => "laststaffreply",
+        NamespaceURI => "",
+        sort_order => 21,
+     },
+);
+has 'lastuserreply_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Lastuserreply]',
+     is          => 'ro',     init_arg    => 'lastuserreplys',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_lastuserreply => ['push'] },     description => {
+        LocalName => "lastuserreply",
+        Prefix => "",
+        node_type => "child",
+        Name => "lastuserreply",
+        NamespaceURI => "",
+        sort_order => 22,
+     },
+);
+has 'nextreplydue_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Nextreplydue]',
+     is          => 'ro',     init_arg    => 'nextreplydues',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_nextreplydue => ['push'] },     description => {
+        LocalName => "nextreplydue",
+        Prefix => "",
+        node_type => "child",
+        Name => "nextreplydue",
+        NamespaceURI => "",
+        sort_order => 23,
+     },
+);
+has 'ownerstaffid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Ownerstaffid]',
+     is          => 'ro',     init_arg    => 'ownerstaffids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_ownerstaffid => ['push'] },     description => {
+        LocalName => "ownerstaffid",
+        Prefix => "",
+        node_type => "child",
+        Name => "ownerstaffid",
+        NamespaceURI => "",
+        sort_order => 24,
+     },
+);
+has 'ownerstaffname_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Ownerstaffname]',
+     is          => 'ro',     init_arg    => 'ownerstaffnames',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_ownerstaffname => ['push'] },     description => {
+        LocalName => "ownerstaffname",
+        Prefix => "",
+        node_type => "child",
+        Name => "ownerstaffname",
+        NamespaceURI => "",
+        sort_order => 25,
+     },
+);
+has 'priorityid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Priorityid]',
+     is          => 'ro',     init_arg    => 'priorityids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_priorityid => ['push'] },     description => {
+        LocalName => "priorityid",
+        Prefix => "",
+        node_type => "child",
+        Name => "priorityid",
+        NamespaceURI => "",
+        sort_order => 26,
+     },
+);
+has 'prioritytitle_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Prioritytitle]',
+     is          => 'ro',     init_arg    => 'prioritytitles',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_prioritytitle => ['push'] },     description => {
+        LocalName => "prioritytitle",
+        Prefix => "",
+        node_type => "child",
+        Name => "prioritytitle",
+        NamespaceURI => "",
+        sort_order => 27,
+     },
+);
+has 'replies_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Replies]',
+     is          => 'ro',     init_arg    => 'repliess',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_replies => ['push'] },     description => {
+        LocalName => "replies",
+        Prefix => "",
+        node_type => "child",
+        Name => "replies",
+        NamespaceURI => "",
+        sort_order => 28,
+     },
+);
+has 'resolutiondue_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Resolutiondue]',
+     is          => 'ro',     init_arg    => 'resolutiondues',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_resolutiondue => ['push'] },     description => {
+        LocalName => "resolutiondue",
+        Prefix => "",
+        node_type => "child",
+        Name => "resolutiondue",
+        NamespaceURI => "",
+        sort_order => 29,
+     },
+);
+has 'slaplanid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Slaplanid]',
+     is          => 'ro',     init_arg    => 'slaplanids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_slaplanid => ['push'] },     description => {
+        LocalName => "slaplanid",
+        Prefix => "",
+        node_type => "child",
+        Name => "slaplanid",
+        NamespaceURI => "",
+        sort_order => 30,
+     },
+);
+has 'statusid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Statusid]',
+     is          => 'ro',     init_arg    => 'statusids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_statusid => ['push'] },     description => {
+        LocalName => "statusid",
+        Prefix => "",
+        node_type => "child",
+        Name => "statusid",
+        NamespaceURI => "",
+        sort_order => 31,
+     },
+);
+has 'statustitle_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Statustitle]',
+     is          => 'ro',     init_arg    => 'statustitles',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_statustitle => ['push'] },     description => {
+        LocalName => "statustitle",
+        Prefix => "",
+        node_type => "child",
+        Name => "statustitle",
+        NamespaceURI => "",
+        sort_order => 32,
+     },
+);
+has 'subject_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Subject]',
+     is          => 'ro',     init_arg    => 'subjects',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_subject => ['push'] },     description => {
+        LocalName => "subject",
+        Prefix => "",
+        node_type => "child",
+        Name => "subject",
+        NamespaceURI => "",
+        sort_order => 33,
+     },
+);
+has 'tags_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Tags]',
+     is          => 'ro',     init_arg    => 'tagss',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_tags => ['push'] },     description => {
+        LocalName => "tags",
+        Prefix => "",
+        node_type => "child",
+        Name => "tags",
+        NamespaceURI => "",
+        sort_order => 34,
+     },
+);
+has 'typeid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Typeid]',
+     is          => 'ro',     init_arg    => 'typeids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_typeid => ['push'] },     description => {
+        LocalName => "typeid",
+        Prefix => "",
+        node_type => "child",
+        Name => "typeid",
+        NamespaceURI => "",
+        sort_order => 35,
+     },
+);
+has 'typetitle_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Typetitle]',
+     is          => 'ro',     init_arg    => 'typetitles',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_typetitle => ['push'] },     description => {
+        LocalName => "typetitle",
+        Prefix => "",
+        node_type => "child",
+        Name => "typetitle",
+        NamespaceURI => "",
+        sort_order => 36,
+     },
+);
+has 'userid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Userid]',
+     is          => 'ro',     init_arg    => 'userids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_userid => ['push'] },     description => {
+        LocalName => "userid",
+        Prefix => "",
+        node_type => "child",
+        Name => "userid",
+        NamespaceURI => "",
+        sort_order => 37,
+     },
+);
+has 'userorganization_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Userorganization]',
+     is          => 'ro',     init_arg    => 'userorganizations',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_userorganization => ['push'] },     description => {
+        LocalName => "userorganization",
+        Prefix => "",
+        node_type => "child",
+        Name => "userorganization",
+        NamespaceURI => "",
+        sort_order => 38,
+     },
+);
+has 'userorganizationid_collection' => (
+     isa         => 'ArrayRef[Kayako3::Staff::Response::TicketList::Userorganizationid]',
+     is          => 'ro',     init_arg    => 'userorganizationids',
+     traits      => [qw(XML Array)],
+     lazy        => 1,
+     auto_deref  => 1,
+     default     => sub { [] },
+     handles    => { add_userorganizationid => ['push'] },     description => {
+        LocalName => "userorganizationid",
+        Prefix => "",
+        node_type => "child",
+        Name => "userorganizationid",
+        NamespaceURI => "",
+        sort_order => 39,
+     },
+);
+1;
+
+__END__
