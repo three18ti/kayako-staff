@@ -58,7 +58,7 @@ has 'password' => (
 
 =item api_url
 
-The Staff API URl, should end with a question mark
+The Staff API URL, should end with a question mark
 
 =back
 
@@ -68,6 +68,23 @@ has 'api_url' => (
     is => 'rw',
     isa => 'Str',
     required => 1,
+);
+
+=over 4
+
+=item user_agent
+
+For somereason, Kayako3 doesn't like when we advertise that our agent is LWP, this resolves that issue
+Feel free to override
+
+=back
+
+=cut
+
+has 'user_agent' => (
+    is      => 'rw',
+    isa     => 'Str',
+    default => 'DEADBEEF',
 );
 
 =head1 Collections
@@ -111,7 +128,7 @@ has 'ua' => (
     is  => 'rw',
     isa => 'LWP::UserAgent',
     lazy    => 1,
-    default => sub { my $agent = LWP::UserAgent->new; $agent->agent($_[0]->_user_agent); $agent; },
+    default => sub { my $agent = LWP::UserAgent->new; $agent->agent($_[0]->user_agent); $agent; },
     handles => {
         post                => 'post',
         get                 => 'get',
@@ -402,7 +419,7 @@ sub get_info {
     );
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::Info' } )->loader;
     $loader->parse_string( $xml_response );
-    $self->{getinfo_response} = shift $loader->filter->objects;
+    $self->{info_response} = shift $loader->filter->objects;
 }
 
 
@@ -419,7 +436,7 @@ Retrieve ticket list for specified department and (optional) status
 sub get_ticket_list {
     my $self = shift;
     my $department_id = shift;
-    my $status_id = shift if $#_ > 1;
+    my $status_id = shift;
     my $optional_parameters = pop;
 
     $optional_parameters->{statusid} = $status_id if $status_id;
