@@ -220,7 +220,6 @@ has 'info_response' => (
     isa => 'Kayako3::Staff::Response::Info::Kayako_staffapi',
     lazy => 1,
     handles => qr/^(?:_.*|get.*)/,
-#    builder => \&get_info,
     default => sub { Kayako3::Staff::Response::Info::Kayako_staffapi->new },
 
 );
@@ -476,7 +475,7 @@ sub load_ticket {
         $self->_api_ticket_load => {
             sessionid   => $self->_session_id,
             ticketid    => $ticket_id,
-            %$optional_parameters,
+#            %$optional_parameters if $%optional_parameters,
         },
     );
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::LoadTicket' } )->loader;
