@@ -9,6 +9,8 @@ use IO::Uncompress::Gunzip qw(gunzip $GunzipError) ;
 use XML::Toolkit::App;
 use Carp;
 
+=pod
+
 =head1 NAME
 
 Kayako3::Staff - Interface for Kayako API
@@ -142,6 +144,8 @@ has 'ua' => (
 
 Object storage for HTTP::Cookies object,
 not accessed directly
+
+=back
 
 =cut
 
@@ -535,6 +539,7 @@ sub update_ticket {
     $self->{load_ticket_response} = shift $loader->filter->objects;
 }
 
+=back
 
 =head1 Utility Methods
 
