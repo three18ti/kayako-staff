@@ -471,6 +471,8 @@ sub load_ticket {
     my $ticket_id            = shift;
     my $optional_parameters = shift;    
     
+    $ticket_id = $self->_check_ticket_id($ticket_id);
+
     my $xml_response = $self->_dispatch_request(
         $self->_api_ticket_load => {
             sessionid   => $self->_session_id,
@@ -508,7 +510,7 @@ sub load_attachment {
 
     my $loader =  XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::LoadAttachment' } )->loader;
     $loader->parse_string( $xml_response );
-    $self->{load_ticket_response} = shift $loader->filter->objects;
+    $self->{load_attachement_response} = shift $loader->filter->objects;
 }
 
 =over 4
@@ -535,7 +537,7 @@ sub update_ticket {
     my $loader 
         = XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::UpdateTicket::Kayako_staffapi' } )->loader;
     $loader->parse_string( $xml_response );
-    $self->{load_ticket_response} = shift $loader->filter->objects;
+    $self->{update_ticket_response} = shift $loader->filter->objects;
 }
 
 =back

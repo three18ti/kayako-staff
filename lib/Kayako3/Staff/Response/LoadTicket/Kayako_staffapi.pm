@@ -80,10 +80,16 @@ sub get_ticket_body {
     $self->tickets_collection->[0]->ticket_collection->[0]->post_collection->[0]->contents_collection->[0]->text;
 }
 
-sub get_ticket_id {
+sub get_ticket_number {
     my $self = shift;
 
     $self->tickets_collection->[0]->ticket_collection->[0]->displayid_collection->[0]->text;
+}
+
+sub get_ticket_id {
+    my $self = shift;
+    
+    $self->tickets_collection->[0]->ticket_collection->[0]->id;
 }
 
 sub get_ticket_sender {
