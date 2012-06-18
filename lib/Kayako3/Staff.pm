@@ -5,7 +5,6 @@ use Moose;
 use strict;
 use warnings;
 
-use IO::Uncompress::Gunzip qw(gunzip $GunzipError) ;
 use XML::Toolkit::App;
 use Carp;
 
@@ -155,6 +154,26 @@ has '_cookie_jar' => (
     isa => 'HTTP::Cookies',
     lazy => 1,
     default => sub { HTTP::Cookies->new },
+);
+
+=over 4
+
+=item _util
+
+Object storage for util object
+Provides common internal utility functions
+
+=back
+
+=cut
+
+use Kayako3::Staff::Util;
+
+has '_util' => (
+    is  => 'ro',
+    isa => 'Kayako3::Staff::Util',
+    default => sub { Kayako3::Staff::Util->new },
+    handles => qr/^(?:_.*)/,
 );
 
 =head2 Kayako Response Objects
@@ -471,7 +490,7 @@ sub load_ticket {
     my $ticket_id            = shift;
     my $optional_parameters = shift;    
     
-    $ticket_id = $self->_check_ticket_id($ticket_id);
+    $ticket_id = $self->_check_ticket_id($ticket_id, $self->ticket_list);
 
     my $xml_response = $self->_dispatch_request(
         $self->_api_ticket_load => {
@@ -540,35 +559,7 @@ sub update_ticket {
     $self->{update_ticket_response} = shift $loader->filter->objects;
 }
 
-=back
-
-=head1 Utility Methods
-
-These are methods used internally by the application, should never need to be called externally
-
-=over 4
-
-=item _unzip
-
-Unzips the response content
-
-=back
-
-=cut
-
-sub _unzip {
-    my $self = shift;
-    my $input = shift;
-
-    open my $FHIN, '<', \$input;
-    open my $FHOUT, '>', \my $xml_response;
-
-    gunzip $FHIN => $FHOUT
-        or warn "gunzip failed: $GunzipError\n";
-
-    return $xml_response;
-}
-
+=head2 Util Methods
 
 =over 4
 
@@ -596,24 +587,6 @@ sub _check_ticket_id {
         }
     }
     return $ticket_id;
-}
-
-=over 4
-
-=item _uri_escape
-
-Performs URI escaping of strings
-
-=back
-
-=cut
-
-use URI::Escape::XS qw/uri_escape/;
-sub _uri_escape {
-    my $self = shift;
-    my $string = shift;
-
-    uri_escape $string;
 }
 
 no Moose;
