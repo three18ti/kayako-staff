@@ -1,4 +1,4 @@
-package Kayako3::Staff::Util;
+package Kayako3::Staff::Collection::Util;
 use 5.010;
 use Moose;
 

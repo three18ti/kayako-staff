@@ -167,12 +167,11 @@ Provides common internal utility functions
 
 =cut
 
-use Kayako3::Staff::Util;
-
+use Kayako3::Staff::Collection::Util;
 has '_util' => (
     is  => 'ro',
-    isa => 'Kayako3::Staff::Util',
-    default => sub { Kayako3::Staff::Util->new },
+    isa => 'Kayako3::Staff::Collection::Util',
+    default => sub { Kayako3::Staff::Collection::Util->new },
     handles => qr/^(?:_.*)/,
 );
 
