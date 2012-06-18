@@ -1,0 +1,59 @@
+<kayako_staffapi>
+<create staffapiid="...">
+    <subject>...</subject>
+    <fullname>...</fullname>
+    <email>...</email>
+ 
+    <!-- Begin Ticket Properties -->
+    <departmentid>...</departmentid>
+    <ticketstatusid>...</ticketstatusid>
+    <ticketpriorityid>...</ticketpriorityid>
+    <tickettypeid>...</tickettypeid>
+    <ownerstaffid>...</ownerstaffid>
+    <emailqueueid>...</emailqueueid>
+ 
+    <!-- Begin Creator Info -->
+    <creator>user</creator>
+    <userid>0</userid>
+    <staffid>0</staffid>
+ 
+    <!-- Begin Other Info -->
+    <type>...</type>
+    <phonenumber>...</phonenumber>
+    <sendautoresponder>...</sendautoresponder>
+    <flagtype>...</flagtype>
+ 
+    <!-- Tags -->
+    <tags>...</tags>
+    <tags>...</tags>
+ 
+    <!-- Recipients -->
+    <ccto>...</ccto>
+    <bccto>...</bccto>
+ 
+    <!-- Due Timestamps -->
+    <resolutiondue>...</resolutiondue>
+    <replydue>...</replydue>
+ 
+    <reply>
+      <contents>...</contents>
+      <attachment filename="..." md5="...">
+        <!--base-64 encoded file contents -->
+      </attachment>
+    </reply>
+ 
+    <watch>...</watch>
+ 
+    <note type="..." notecolor="...">
+      <!-- note contents -->
+    </note>
+ 
+    <billing timeworked="..." timebillable="..." billdate="..." workdate="..." worker="..." notecolor="...">
+      <!-- note contents -->
+    </billing>
+ 
+    <customfield id="...">
+      <!-- field type-specific data -->
+    </customfield>
+  </create>
+</kayako_staffapi>

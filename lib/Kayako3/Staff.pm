@@ -598,6 +598,24 @@ sub _check_ticket_id {
     return $ticket_id;
 }
 
+=over 4
+
+=item _uri_escape
+
+Performs URI escaping of strings
+
+=back
+
+=cut
+
+use URI::Escape::XS qw/uri_escape/;
+sub _uri_escape {
+    my $self = shift;
+    my $string = shift;
+
+    uri_escape $string;
+}
+
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1; # End of Kayako3::Staff
