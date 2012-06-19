@@ -17,11 +17,11 @@ my $data = {
         typeid          => '4',
         ownerstaffid    => '5',
         emailqueueid    => '6',
+        to              => 'foo@bar.com',
     },
-    user => {
+    staff => {
         id              => "1234567",
         fullname        => "Bob Something",
-        email           => 'foo@bar.com',
     },
 };
 

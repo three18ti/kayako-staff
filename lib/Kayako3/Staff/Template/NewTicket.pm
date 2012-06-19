@@ -10,48 +10,46 @@ my $template =<<'END_TEMPLATE';
 [%- USE assert -%]
 <?xml version="1.0" encoding="UTF-8"?>
 <kayako_staffapi>
-    <create staffapiid="[%- staff.apiid -%]">
+    <create staffapiid="[%- staff.id -%]">
+    [%- DEFAULT 
+        ticket.creator       = 'staff'
+        ticket.autoresponder = 0
+    -%]
 
-        [%- # Begin Staff Identification -%]
-        <fullname>[%- staff.fullname -%]</fullname>
-        <creator>staff</creator>
-        <staffid>[%- staff.id -%]</staffid>
+        <!-- # Begin Staff Identification -->
+        <fullname>[%- assert.staff.fullname -%]</fullname>
+        <creator>[%- ticket.creator -%]</creator>
+        <staffid>[%- assert.staff.id -%]</staffid>
 
-        [%- # Begin Ticket Recipients 0%]
+        <!-- # Begin Ticket Recipients -->
         <email>[%- assert.ticket.to -%]</email>
         <ccto>[%- ticket.ccto -%]</ccto>
         <bccto>[%- ticket.bccto -%]</bccto>
 
-        [%- # Begin Ticket Properties -%]
+        <!-- # Begin Ticket Properties -->
         <departmentid>[%- assert.ticket.departmentid -%]</departmentid>
         <tickettypeid>[%- assertticket.typeid -%]</tickettypeid>
         <ownerstaffid>[%- staff.id -%]</ownerstaffid>
         <emailqueueid>[%- assert.ticket.emailqueueid -%]</emailqueueid>
         <ticketstatusid>[%- assert.ticket.statusid -%]</ticketstatusid>
         <ticketpriorityid>[%- assert.ticket.priorityid -%]</ticketpriorityid>
-        <sendautoresponder>    
-            [%- IF ticket.autoresponder -%]
-                ticket.autoresponder
-            [%- ELSE -%]
-                0
-            [%- END -%]
-        </sendautoresponder>
+        <sendautoresponder>[%- ticket.autoresponder -%]</sendautoresponder>
 
-        [%- # Begin Ticket info -%]
+        <!-- # Begin Ticket info -->
         <subject>[%- assert.ticket.subject -%]</subject>
         
-        [%- # Begin Ticket Body -%]
+        <!-- # Begin Ticket Body -->
         <reply>
             <contents>[%- assert.ticket.body -%]</contents>
             [%- IF ticket.attachment -%]
                 <attachment filename="[%- ticket.attachment.filename -%]" md5="[%- ticket.attachment.md5 -%]">
                     [%- ticket.attachment.contents -%]
                 </attachment>
-            [%- END -%]
+            [%- END %]
         </reply>
 
-        [%- # Begin Ticket Notes -%]
         [%- IF ticket.notes -%]
+            <!-- # Begin Ticket Notes -->
             <note type="[%- ticket.note.type -%]" notecolor="[%- ticket.note.color -%]">
                 [%- ticket.note.contents -%]
             </note>
