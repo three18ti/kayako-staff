@@ -50,8 +50,9 @@ my $template =<<'END_TEMPLATE';
 
         [%- IF ticket.notes -%]
             <!-- # Begin Ticket Notes -->
-            <note type="[%- ticket.note.type -%]" notecolor="[%- ticket.note.color -%]">
-                [%- ticket.note.contents -%]
+            [%- FOREACH note IN ticket.notes -%]
+            <note type="[%- note.type -%]" notecolor="[%- note.color -%]">
+                [%- note.contents -%]
             </note>
         [%- END -%]
 

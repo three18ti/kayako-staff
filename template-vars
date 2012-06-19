@@ -1,0 +1,41 @@
+# required
+
+staff { 
+    id
+    fullname
+}
+
+ticket {
+    # ticket info
+    departmentid
+    tickettypeid
+    emailqueueid
+    statusid
+    priorityid
+    
+    # email info
+    to
+    subject
+    body
+
+}
+
+
+# optional
+
+ticket {
+    attachemnt {
+        filename
+        md5
+        contents (base64 encoded)
+    }  
+
+    notes [
+        {
+            type
+            color
+            contents
+        }
+         
+    ]
+}
