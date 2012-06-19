@@ -1,14 +1,10 @@
-package Kayako3::Staff::Template::NewTicket;
-use 5.010;
-
+#!/usr/bin/perl
+package Test;
 use Moose;
 
-sub _build_template {
-    my $self = shift;
-
+sub get_template {
 my $template =<<'END_TEMPLATE';
 [%- USE assert -%]
-<?xml version="1.0" encoding="UTF-8"?>
 <kayako_staffapi>
     <create staffapiid="[%- staffapiid -%]">
 
@@ -27,18 +23,42 @@ my $template =<<'END_TEMPLATE';
         <tickettypeid>[%- ticket.typeid -%]</tickettypeid>
         <ownerstaffid>[%- ticket.ownerstaffid -%]</ownerstaffid>
         <emailqueueid>[%- ticket.emailqueueid -%]</emailqueueid>
-
-        
-
     </create>
 </kayako_staffapi>
 END_TEMPLATE
-    return $template;    
 }
 
+package main;
+use strict;
+use warnings;
 
-no Moose;
-__PACKAGE__->meta->make_immutable;
-1; # End of Kayako3::Staff::Template::NewTicket
-__END__
+use Template;
+use Data::Dumper;
 
+my %data = (
+    staffapiid          => "1234",
+    ticket => {
+        subject         => "test",
+        departmentid    => '1',
+        statusid        => '2',
+        priorityid      => '3',
+        typeid          => '4',
+        ownerstaffid    => '5',
+        emailqueueid    => '6',
+    },
+    user => {
+        id              => "1234567",
+        fullname        => "Bob Something",
+        email           => 'foo@bar.com',
+    },
+);
+
+
+print Dumper %data;
+
+my $cfg = Test->new;
+my $tt = Template->new;
+
+my $template = $cfg->get_template();
+
+print $tt->process(\$template, \%data) || $tt->error;

@@ -551,7 +551,8 @@ sub update_ticket {
             payload     => $payload,
         }
     );
-    
+
+    return $xml_response;    
     my $loader 
         = XML::Toolkit::App->new( xmlns => { '' => 'Kayako3::Staff::Response::UpdateTicket::Kayako_staffapi' } )->loader;
     $loader->parse_string( $xml_response );
