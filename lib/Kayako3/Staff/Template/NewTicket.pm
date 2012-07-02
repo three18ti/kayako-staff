@@ -3,7 +3,9 @@ use 5.010;
 
 use Moose;
 
-sub _build_template {
+extends 'Kayako3::Staff::Template';
+
+sub _get_template {
     my $self = shift;
 
 my $template =<<'END_TEMPLATE';

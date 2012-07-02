@@ -28,13 +28,11 @@ my $data = {
 my $cfg = Kayako3::Staff::Template::NewTicket->new;
 my $tt = Template->new;
 
-my $template = $cfg->_build_template;
+my $template = $cfg->_build_template($data);
 
-open my $OUT, '>', \my $fh;
-
-$tt->process(\$template, $data, $OUT) || $tt->error;
-
-close $OUT;
+#open my $OUT, '>', \my $fh;
+#$tt->process(\$template, $data, $OUT) || $tt->error;
+#close $OUT;
 
 
-print $fh;
+print $template;
