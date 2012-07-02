@@ -54,7 +54,8 @@ my $template =<<'END_TEMPLATE';
             <note type="[%- note.type -%]" notecolor="[%- note.color -%]">
                 [%- note.contents -%]
             </note>
-        [%- END -%]
+            [%- END -%]
+        [%- END - %]
 
     </create>
 </kayako_staffapi>

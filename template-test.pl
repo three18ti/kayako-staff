@@ -30,4 +30,11 @@ my $tt = Template->new;
 
 my $template = $cfg->_build_template;
 
-print $tt->process(\$template, $data) || $tt->error;
+open my $OUT, '>', \my $fh;
+
+$tt->process(\$template, $data, $OUT) || $tt->error;
+
+close $OUT;
+
+
+print $fh;

@@ -270,7 +270,7 @@ has 'ticket_list_response' => (
 Loaded Ticket response obkect
 
 Object storage for Kayako3::Staff::Response::LoadTicket
-
+D6uLDv8>
 =back
 
 =cut
@@ -533,6 +533,26 @@ sub load_attachment {
 
 =over 4
 
+=item new_ticket
+
+Create a new ticket, takes the ticket variables and builds the template
+
+=back
+
+=cut
+
+sub new_ticket {
+    my $self = shift;
+    my $params = shift;
+
+    
+}
+
+
+
+
+=over 4
+
 =item update_ticket 
 
 Updates an existing ticket (or creates a new one?)
@@ -558,6 +578,7 @@ sub update_ticket {
     $loader->parse_string( $xml_response );
     $self->{update_ticket_response} = shift $loader->filter->objects;
 }
+
 
 =head2 Util Methods
 
